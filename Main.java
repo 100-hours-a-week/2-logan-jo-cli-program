@@ -285,8 +285,9 @@ public class Main {
         for (Dog dog : dogs) {
             if (dog.getName().equals(dog_name)) {
                 System.out.println(Message.SUCCESS_SOLD);
-                dogs.remove(dog);
                 puppies.add(new Puppy(dog, person));
+                person.addDog(dog);
+                dogs.remove(dog);
                 break;
             } else {
                 System.out.println(Message.NO_DOG);
@@ -302,6 +303,8 @@ public class Main {
         System.out.println("------------ 분양된 강아지 목록 ------------");
         for (Puppy puppy : puppies) {
             puppy.write();
+            System.out.println("------------- 소유자 정보 -------------");
+            puppy.getPerson().write();
             System.out.println("------------------------------------");
         }
     }

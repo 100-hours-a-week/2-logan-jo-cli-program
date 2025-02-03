@@ -3,6 +3,14 @@ import enums.Gender;
 public class Puppy extends Dog{
     private Person person;
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
     public Puppy(Dog dog, Person person) {
         super(dog.getDogType(), dog.getName(), dog.getAge(), dog.getGender(), dog.getPrice(), dog.getHealth(), dog.getTraining());
         this.person = person;
