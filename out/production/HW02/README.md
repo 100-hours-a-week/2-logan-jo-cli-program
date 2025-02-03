@@ -2,6 +2,8 @@
 
 ## Class Diragram
 
+<img src="https://github.com/user-attachments/assets/b385f1bd-af67-4a9a-ad8d-8586b26afc5d" width="50%" height="30%" />
+
 ## 프로그램 설명
 유기견 보호소에서 유기견을 관리하고, 분양하는 **관리 프로그램** 입니다.
 
@@ -35,6 +37,3 @@
   3. 종료
 ```
 - **Dog**와 **Puppy**의 차이는 분양의 여부입니다. 이미 분양된 동물의 경우 주인을 등록해 관리하라 필요성이 있기 때문입니다.
-- 
-
-## 시연영상

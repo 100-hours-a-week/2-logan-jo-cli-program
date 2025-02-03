@@ -14,16 +14,20 @@ public class Main {
             System.out.println("---- 유기견 보호소 관리 시스템 ----");
             System.out.println("1. 관리자 모드, 2. 사용자 모드, 3. 종료");
 
-            int c = Integer.parseInt(sc.nextLine());
+            try {
+                int c = Integer.parseInt(sc.nextLine());
 
-            if (c == 1) {
-                adminModal();
-            } else if (c == 2) {
-                userModal();
-            } else if (c == 3) {
-                System.out.println(Message.END_PROGRAM);
-                break;
-            } else {
+                if (c == 1) {
+                    adminModal();
+                } else if (c == 2) {
+                    userModal();
+                } else if (c == 3) {
+                    System.out.println(Message.END_PROGRAM);
+                    break;
+                } else {
+                    throw new IndexOutOfBoundsException();
+                }
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
                 System.out.println(Message.FALE_INPUT);
             }
         }
@@ -45,24 +49,28 @@ public class Main {
             try {
                 age = Integer.parseInt(sc.nextLine().trim());
                 if (age < 0) {
-                    System.out.println("나이는 0 이상이어야 합니다.");
-                    continue;
+                    throw new IllegalArgumentException();
                 }
                 break;
-            } catch (NumberFormatException e) {
+            } catch (IllegalArgumentException | Error e) {
                 System.out.println("올바른 숫자를 입력하세요.");
             }
         }
         while (true) {
             System.out.print("동물 성별 입력(1. 수컷, 2. 암컷): ");
             String genderInput = sc.nextLine().trim();
-            if (genderInput.equals("1")) {
-                gender = Gender.수컷;
-                break;
-            } else if (genderInput.equals("2")) {
-                gender = Gender.암컷;
-                break;
-            } else {
+
+            try {
+                if (genderInput.equals("1")) {
+                    gender = Gender.수컷;
+                    break;
+                } else if (genderInput.equals("2")) {
+                    gender = Gender.암컷;
+                    break;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
                 System.out.println(Message.FALE_INPUT);
             }
         }
@@ -86,10 +94,14 @@ public class Main {
         while (true) {
             System.out.print("동물 건강 상태 입력(건강함, 돈이 조금 듬, 돈이 많이 듬): ");
             health = sc.nextLine().trim();
-            if (health.equals("건강함") || health.equals("돈이 조금 듬") || health.equals("돈이 많이 듬") || health.equals("많이 아파요...")) {
-                break;
-            } else {
-                System.out.println("올바른 건강 상태를 입력하세요: 건강함, 돈이 조금 듬, 돈이 많이 듬");
+            try {
+                if (health.equals("건강함") || health.equals("돈이 조금 듬") || health.equals("돈이 많이 듬") || health.equals("많이 아파요...")) {
+                    break;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(Message.FALE_INPUT);
             }
         }
         while (true) {
@@ -102,7 +114,7 @@ public class Main {
                 }
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("올바른 숫자를 입력하세요.");
+                System.out.println(Message.FALE_INPUT);
             }
         }
         dogs.add(new Dog(type, name, age, gender, price, health, training));
@@ -138,101 +150,105 @@ public class Main {
                 System.out.println("5. 가격");
                 System.out.println("6. 건강 상태");
                 System.out.println("7. 훈련도");
-                int choice = Integer.parseInt(sc.nextLine());
 
-                switch (choice) {
-                    case 1:
-                        System.out.print("수정할 이름 입력: ");
-                        String newName = sc.nextLine().trim();
-                        dog.setName(newName);
-                        break;
-                    case 2:
-                        while (true) {
-                            System.out.print("수정할 나이 입력: ");
-                            try {
-                                int newAge = Integer.parseInt(sc.nextLine().trim());
-                                if (newAge < 0) {
-                                    System.out.println("나이는 0 이상이어야 합니다.");
-                                    continue;
-                                }
-                                dog.setAge(newAge);
-                                break;
-                            } catch (NumberFormatException e) {
-                                System.out.println("올바른 숫자를 입력하세요.");
-                            }
-                        }
-                        break;
-                    case 3:
-                        while (true) {
-                            System.out.print("수정할 성별 입력(1. 수컷, 2. 암컷): ");
-                            String genderInput = sc.nextLine().trim();
-                            if (genderInput.equals("1")) {
-                                dog.setGender(Gender.수컷);
-                                break;
-                            } else if (genderInput.equals("2")) {
-                                dog.setGender(Gender.암컷);
-                                break;
-                            } else {
-                                System.out.println(Message.FALE_INPUT);
-                            }
-                        }
-                        break;
-                    case 4:
-                        System.out.print("수정할 품종 입력: ");
-                        String newSubspecies = sc.nextLine().trim();
-                        dog.setDogType(newSubspecies);
-                        break;
-                    case 5:
-                        while (true) {
-                            System.out.print("수정할 가격 입력: ");
-                            try {
-                                double newPrice = Double.parseDouble(sc.nextLine().trim());
-                                if (newPrice < 0) {
-                                    System.out.println("가격은 0 이상이어야 합니다.");
-                                    continue;
-                                }
-                                dog.setPrice(newPrice);
-                                break;
-                            } catch (NumberFormatException e) {
-                                System.out.println("올바른 숫자를 입력하세요.");
-                            }
-                        }
-                        break;
-                    case 6:
-                        while (true) {
-                            System.out.print("수정할 건강 상태 입력(건강함, 돈이 조금 듬, 돈이 많이 듬): ");
-                            String newHealth = sc.nextLine().trim();
-                            if (newHealth.equals("건강함") || newHealth.equals("돈이 조금 듬") || newHealth.equals("돈이 많이 듬") || newHealth.equals("많이 아파요...")) {
-                                dog.setHealth(newHealth);
-                                break;
-                            } else {
-                                System.out.println("올바른 건강 상태를 입력하세요: 건강함, 돈이 조금 듬, 돈이 많이 듬");
-                            }
-                        }
-                        break;
+                try {
+                    int choice = Integer.parseInt(sc.nextLine());
 
-                    case 7:
-                        while (true) {
-                            System.out.print("수정할 훈련도 입력(0~100): ");
-                            try {
-                                int newTraining = Integer.parseInt(sc.nextLine().trim());
-                                if (newTraining < 0 || newTraining > 100) {
-                                    System.out.println("훈련도는 0에서 100 사이의 값이어야 합니다.");
-                                    continue;
+                    switch (choice) {
+                        case 1:
+                            System.out.print("수정할 이름 입력: ");
+                            String newName = sc.nextLine().trim();
+                            dog.setName(newName);
+                            break;
+                        case 2:
+                            while (true) {
+                                System.out.print("수정할 나이 입력: ");
+                                try {
+                                    int newAge = Integer.parseInt(sc.nextLine().trim());
+                                    if (newAge < 0) {
+                                        System.out.println("나이는 0 이상이어야 합니다.");
+                                        continue;
+                                    }
+                                    dog.setAge(newAge);
+                                    break;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("올바른 숫자를 입력하세요.");
                                 }
-                                dog.setTraining(newTraining);
-                                break;
-                            } catch (NumberFormatException e) {
-                                System.out.println("올바른 숫자를 입력하세요.");
                             }
-                        }
-                        break;
+                            break;
+                        case 3:
+                            while (true) {
+                                System.out.print("수정할 성별 입력(1. 수컷, 2. 암컷): ");
+                                String genderInput = sc.nextLine().trim();
+                                if (genderInput.equals("1")) {
+                                    dog.setGender(Gender.수컷);
+                                    break;
+                                } else if (genderInput.equals("2")) {
+                                    dog.setGender(Gender.암컷);
+                                    break;
+                                } else {
+                                    System.out.println(Message.FALE_INPUT);
+                                }
+                            }
+                            break;
+                        case 4:
+                            System.out.print("수정할 품종 입력: ");
+                            String newSubspecies = sc.nextLine().trim();
+                            dog.setDogType(newSubspecies);
+                            break;
+                        case 5:
+                            while (true) {
+                                System.out.print("수정할 가격 입력: ");
+                                try {
+                                    double newPrice = Double.parseDouble(sc.nextLine().trim());
+                                    if (newPrice < 0) {
+                                        System.out.println("가격은 0 이상이어야 합니다.");
+                                        continue;
+                                    }
+                                    dog.setPrice(newPrice);
+                                    break;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("올바른 숫자를 입력하세요.");
+                                }
+                            }
+                            break;
+                        case 6:
+                            while (true) {
+                                System.out.print("수정할 건강 상태 입력(건강함, 돈이 조금 듬, 돈이 많이 듬): ");
+                                String newHealth = sc.nextLine().trim();
+                                if (newHealth.equals("건강함") || newHealth.equals("돈이 조금 듬") || newHealth.equals("돈이 많이 듬") || newHealth.equals("많이 아파요...")) {
+                                    dog.setHealth(newHealth);
+                                    break;
+                                } else {
+                                    System.out.println("올바른 건강 상태를 입력하세요: 건강함, 돈이 조금 듬, 돈이 많이 듬");
+                                }
+                            }
+                            break;
 
-                    default:
-                        System.out.println(Message.FALE_INPUT);
-                        break;
+                        case 7:
+                            while (true) {
+                                System.out.print("수정할 훈련도 입력(0~100): ");
+                                try {
+                                    int newTraining = Integer.parseInt(sc.nextLine().trim());
+                                    if (newTraining < 0 || newTraining > 100) {
+                                        System.out.println("훈련도는 0에서 100 사이의 값이어야 합니다.");
+                                        continue;
+                                    }
+                                    dog.setTraining(newTraining);
+                                    break;
+                                } catch (NumberFormatException e) {
+                                    System.out.println("올바른 숫자를 입력하세요.");
+                                }
+                            }
+                            break;
+
+                        default:
+                            throw new IllegalArgumentException();
+                    }
+                    return;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(Message.FALE_INPUT);
                 }
-                return;
             } else {
                 System.out.println(Message.NO_DOG);
                 return;
@@ -252,10 +268,10 @@ public class Main {
             if (dogs.get(i).getName().equals(name)) {
                 dogs.remove(i);
                 System.out.println("강아지가 삭제되었습니다.");
-            } else {
-                System.out.println(Message.NO_DOG);
+                return;
             }
         }
+        System.out.println(Message.NO_DOG);
     }
     private static void soldDog() {
         if (dogs.isEmpty()) {
@@ -270,13 +286,24 @@ public class Main {
         System.out.print("보호자 주소 입력: ");
         String address = sc.nextLine();
         System.out.print("보호자 재산 입력(단위: 만원): ");
-        int property = Integer.parseInt(sc.nextLine());
 
-        if (property < 2000) {
-            System.out.println("보호자 재산이 부족합니다.");
-            return;
+        int property=0;
+
+        while (true) {
+            try {
+                property = Integer.parseInt(sc.nextLine());
+                if (property >= 2000) {
+                    break;
+                } else{
+                    throw new IllegalArgumentException();
+                }
+            } catch (NumberFormatException error) {
+                System.out.println(Message.FALE_INPUT);
+            } catch (IllegalArgumentException e) {
+                System.out.println("보호자 재산이 부족합니다.");
+                return;
+            }
         }
-
         Person person = new Person(name, phone, address, property);
 
         System.out.print("구매할 동물 이름 입력: ");
@@ -319,29 +346,32 @@ public class Main {
             System.out.println("5. 분양된 동물");
             System.out.println("6. 종료");
 
-            int choice = Integer.parseInt(sc.nextLine());
+            try{
+                int choice = Integer.parseInt(sc.nextLine());
 
-            switch (choice) {
-                case 1:
-                    addDog();
-                    break;
-                case 2:
-                    showDogs();
-                    break;
-                case 3:
-                    editDog();
-                    break;
-                case 4:
-                    deleteDog();
-                    break;
-                case 5:
-                    showPuppies();
-                    break;
-                case 6:
-                    return;
-                default:
-                    System.out.println(Message.FALE_INPUT);
-                    break;
+                switch (choice) {
+                    case 1:
+                        addDog();
+                        break;
+                    case 2:
+                        showDogs();
+                        break;
+                    case 3:
+                        editDog();
+                        break;
+                    case 4:
+                        deleteDog();
+                        break;
+                    case 5:
+                        showPuppies();
+                        break;
+                    case 6:
+                        return;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(Message.FALE_INPUT);
             }
         }
     }
@@ -353,20 +383,24 @@ public class Main {
             System.out.println("2. 동물 구매");
             System.out.println("3. 종료");
 
-            int choice = Integer.parseInt(sc.nextLine());
+            try {
 
-            switch (choice) {
-                case 1:
-                    showDogs();
-                    break;
-                case 2:
-                    soldDog();
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println(Message.FALE_INPUT);
-                    break;
+                int choice = Integer.parseInt(sc.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        showDogs();
+                        break;
+                    case 2:
+                        soldDog();
+                        break;
+                    case 3:
+                        return;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(Message.FALE_INPUT);
             }
         }
     }
