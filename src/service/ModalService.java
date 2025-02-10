@@ -13,9 +13,9 @@ public class ModalService {
 
     public ModalService(Scanner sc) {
         this.sc = sc;
-        this.dogService = new DogService(sc);
-        this.puppyService = new PuppyService(sc, dogService);
-        this.personService = new PersonService(sc);
+        dogService = new DogService(sc);
+        puppyService = new PuppyService(sc, dogService);
+        personService = new PersonService(sc);
     }
     public void adminModal() {
         while (true) {

@@ -4,6 +4,8 @@ import src.model.Dog;
 import src.Message.Message;
 import src.model.Person;
 import src.model.Puppy;
+import src.thread.AdminThread;
+import src.thread.UserThread;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -59,10 +61,18 @@ public class PuppyService {
         for (Dog dog : dogs) {
             if (dog.getName().equals(dog_name)) {
                 System.out.println(Message.SUCCESS_SOLD);
-                puppies.add(new Puppy(dog, person));
-                person.addDog(dog);
+                Puppy puppy = new Puppy(dog, person);
+                puppies.add(puppy);
+                person.addDog(puppy);
                 person.withdraw(dog.getPrice());
                 dogs.remove(dog);
+
+                UserThread userThread = new UserThread(puppy);
+                AdminThread adminThread = new AdminThread(puppy, userThread, this);
+
+                adminThread.start();
+                userThread.start();
+
                 break;
             } else {
                 System.out.println(Message.NO_DOG);
@@ -82,5 +92,11 @@ public class PuppyService {
             puppy.getPerson().write();
             System.out.println("------------------------------------");
         }
+    }
+    public void returnPuppy(Puppy puppy) {
+        puppies.remove(puppy);
+        Dog returnDog = new Dog(puppy.getDogType(), puppy.getName(), puppy.getAge(), puppy.getGender(), puppy.getPrice(), puppy.getHealth(), puppy.getTraining());
+        dogService.getDogs().add(returnDog);
+        System.out.println(puppy.getName() + "를 보호소로 반환합니다.");
     }
 }

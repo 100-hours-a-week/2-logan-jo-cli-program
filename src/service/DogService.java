@@ -11,7 +11,7 @@ public class DogService {
     private static Scanner sc;
     private static ArrayList<Dog> dogs = new ArrayList<>();
 
-    public static ArrayList<Dog> getDogs() {
+    public ArrayList<Dog> getDogs() {
         return dogs;
     }
 
