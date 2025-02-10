@@ -1,4 +1,8 @@
-import enums.Gender;
+package src.service;
+
+import src.enums.Gender;
+import src.model.Dog;
+import src.Message.Message;
 
 import java.util.ArrayList;
 import java.util.Scanner;

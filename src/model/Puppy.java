@@ -1,6 +1,6 @@
-import enums.Gender;
+package src.model;
 
-public class Puppy extends Dog{
+public class Puppy extends Dog {
     private Person person;
 
     public Person getPerson() {
