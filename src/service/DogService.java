@@ -1,4 +1,8 @@
-import enums.Gender;
+package src.service;
+
+import src.enums.Gender;
+import src.model.Dog;
+import src.Message.Message;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -7,7 +11,7 @@ public class DogService {
     private static Scanner sc;
     private static ArrayList<Dog> dogs = new ArrayList<>();
 
-    public static ArrayList<Dog> getDogs() {
+    public ArrayList<Dog> getDogs() {
         return dogs;
     }
 

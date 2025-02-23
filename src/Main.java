@@ -1,6 +1,8 @@
-import enums.Gender;
+package src;
 
-import java.util.ArrayList;
+import src.Message.Message;
+import src.service.ModalService;
+
 import java.util.Scanner;
 
 public class Main {
@@ -18,7 +20,7 @@ public class Main {
                 if (c == 1) {
                     modalService.adminModal();
                 } else if (c == 2) {
-                    modalService.userModal();
+                    modalService.personModal();
                 } else if (c == 3) {
                     System.out.println(Message.END_PROGRAM);
                     break;

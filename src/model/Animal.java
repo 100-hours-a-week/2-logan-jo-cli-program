@@ -1,4 +1,6 @@
-import enums.Gender;
+package src.model;
+
+import src.enums.Gender;
 
 public class Animal {
     private String name;

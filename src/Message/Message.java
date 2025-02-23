@@ -1,3 +1,5 @@
+package src.Message;
+
 public final class Message {
     public static final String FALE_INPUT = "잘못된 입력입니다. 다시 입력해주세요.";
     public static final String NO_DOG = "강아지가 없습니다.";

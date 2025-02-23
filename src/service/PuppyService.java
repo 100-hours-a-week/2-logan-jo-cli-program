@@ -1,3 +1,12 @@
+package src.service;
+
+import src.model.Dog;
+import src.Message.Message;
+import src.model.Person;
+import src.model.Puppy;
+import src.thread.AdminThread;
+import src.thread.UserThread;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,27 +20,18 @@ public class PuppyService {
         this.dogService = dogService;
     }
 
-    public void soldDog() {
+    public void soldDog(Person person) {
         ArrayList<Dog> dogs = dogService.getDogs();
 
         if (dogs.isEmpty()) {
-            System.out.println("보호 가능한 동물이 없습니다.");
+            System.out.println(Message.NO_DOG);
             return;
         }
 
-        System.out.print("보호자 이름 입력: ");
-        String name = sc.nextLine();
-        System.out.print("보호자 전화번호 입력: ");
-        String phone = sc.nextLine();
-        System.out.print("보호자 주소 입력: ");
-        String address = sc.nextLine();
-        System.out.print("보호자 재산 입력(단위: 만원): ");
-
-        int property=0;
+        double property = person.getProperty();
 
         while (true) {
             try {
-                property = Integer.parseInt(sc.nextLine());
                 if (property >= 2000) {
                     break;
                 } else{
@@ -44,17 +44,35 @@ public class PuppyService {
                 return;
             }
         }
-        Person person = new Person(name, phone, address, property);
+        String dog_name = "";
 
-        System.out.print("구매할 동물 이름 입력: ");
-        String dog_name = sc.nextLine();
+        while (true) {
+            System.out.print("구매할 동물의 이름: ");
+
+            try {
+                dog_name = sc.nextLine();
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(Message.NO_DOG);
+                return;
+            }
+        }
 
         for (Dog dog : dogs) {
             if (dog.getName().equals(dog_name)) {
                 System.out.println(Message.SUCCESS_SOLD);
-                puppies.add(new Puppy(dog, person));
-                person.addDog(dog);
+                Puppy puppy = new Puppy(dog, person);
+                puppies.add(puppy);
+                person.addDog(puppy);
+                person.withdraw(dog.getPrice());
                 dogs.remove(dog);
+
+                UserThread userThread = new UserThread(puppy);
+                AdminThread adminThread = new AdminThread(puppy, userThread, this);
+
+                adminThread.start();
+                userThread.start();
+
                 break;
             } else {
                 System.out.println(Message.NO_DOG);
@@ -74,5 +92,11 @@ public class PuppyService {
             puppy.getPerson().write();
             System.out.println("------------------------------------");
         }
+    }
+    public void returnPuppy(Puppy puppy) {
+        puppies.remove(puppy);
+        Dog returnDog = new Dog(puppy.getDogType(), puppy.getName(), puppy.getAge(), puppy.getGender(), puppy.getPrice(), puppy.getHealth(), puppy.getTraining());
+        dogService.getDogs().add(returnDog);
+        System.out.println(puppy.getName() + "를 보호소로 반환합니다.");
     }
 }
